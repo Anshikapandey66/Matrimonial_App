@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Discover Matches - MilanMatch</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .discover-header {
+      text-align: center;
+      padding: 35px 20px 15px;
+    }
+
+    .discover-header h1 {
+      color: #8e2457;
+    }
+
+    .discover-header p {
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .discover-grid {
+      max-width: 1100px;
+      margin: 20px auto 50px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+    }
+
+    .match-card {
+      background: white;
+      padding: 22px;
+      border-radius: 15px;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    }
+
+    .match-card h2 {
+      color: #8e2457;
+      margin-bottom: 12px;
+    }
+
+    .match-card p {
+      margin: 8px 0;
+      color: #666;
+    }
+
+    .match-score {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 7px 12px;
+      border-radius: 20px;
+      background: #f7e8ef;
+      color: #8e2457;
+      font-weight: bold;
+    }
+
+    .empty {
+      text-align: center;
+      grid-column: 1 / -1;
+      padding: 40px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="discover-header">
+
+    <h1>💕 Discover Matches</h1>
+
+    <p>
+      Profiles matching your preferences
+    </p>
+
+  </section>
+
+  <main
+    class="discover-grid"
+    id="discoverContainer"
+  ></main>
+
+  <script>
+
+    const profiles = [
+      {
+        id: 1,
+        name: "Aarav Sharma",
+        age: 28,
+        city: "Delhi",
+        profession: "Software Engineer",
+        education: "Post Graduate"
+      },
+      {
+        id: 2,
+        name: "Priya Mehta",
+        age: 26,
+        city: "Mumbai",
+        profession: "Designer",
+        education: "Graduate"
+      },
+      {
+        id: 3,
+        name: "Rohan Verma",
+        age: 30,
+        city: "Jaipur",
+        profession: "Business Owner",
+        education: "Graduate"
+      },
+      {
+        id: 4,
+        name: "Ananya Singh",
+        age: 27,
+        city: "Bangalore",
+        profession: "Doctor",
+        education: "Doctorate"
+      },
+      {
+        id: 5,
+        name: "Kabir Kapoor",
+        age: 29,
+        city: "Delhi",
+        profession: "Product Manager",
+        education: "Post Graduate"
+      }
+    ];
+
+    const preferences =
+      JSON.parse(
+        localStorage.getItem("matchPreferences")
+      );
+
+    const container =
+      document.getElementById("discoverContainer");
+
+    function findMatches() {
+
+      if (!preferences) {
+
+        container.innerHTML = `
+          <div class="empty">
+            <h2>Set your preferences first ❤️</h2>
+            <p>
+              Please create your match preferences
+              before discovering profiles.
+            </p>
+          </div>
+        `;
+
+        return;
+      }
+
+      const minAge =
+        Number(preferences.minAge) || 18;
+
+      const maxAge =
+        Number(preferences.maxAge) || 80;
+
+      const matches = profiles.filter(profile => {
+
+        const ageMatch =
+          profile.age >= minAge &&
+          profile.age <= maxAge;
+
+        const cityMatch =
+          !preferences.city ||
+          profile.city.toLowerCase() ===
+          preferences.city.toLowerCase();
+
+        const professionMatch =
+          !preferences.profession ||
+          profile.profession ===
+          preferences.profession;
+
+        const educationMatch =
+          !preferences.education ||
+          profile.education ===
+          preferences.education;
+
+        return (
+          ageMatch &&
+          cityMatch &&
+          professionMatch &&
+          educationMatch
+        );
+      });
+
+      if (matches.length === 0) {
+
+        container.innerHTML = `
+          <div class="empty">
+            <h2>No matching profiles 😔</h2>
+            <p>
+              Try changing your preferences.
+            </p>
+          </div>
+        `;
+
+        return;
+      }
+
+      matches.forEach(profile => {
+
+        const card =
+          document.createElement("div");
+
+        card.className = "match-card";
+
+        card.innerHTML = `
+          <h2>${profile.name}</h2>
+
+          <p>🎂 ${profile.age} years old</p>
+
+          <p>📍 ${profile.city}</p>
+
+          <p>💼 ${profile.profession}</p>
+
+          <p>🎓 ${profile.education}</p>
+
+          <span class="match-score">
+            💕 Good Match
+          </span>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    findMatches();
+
+  </script>
+
+</body>
+</html>
