@@ -316,6 +316,25 @@
 
     renderProfiles();
   </script>
+<script src="matches.js"></script>
 
+<script>
+  function likeProfile(profileId) {
+
+    const profile = profiles.find(
+      item => item.id === profileId
+    );
+
+    if (!profile) return;
+
+    const added = addToShortlist(profile);
+
+    if (added) {
+      alert("Profile added to your shortlist ❤️");
+    } else {
+      alert("Profile already shortlisted ❤️");
+    }
+  }
+</script>
 </body>
 </html>
