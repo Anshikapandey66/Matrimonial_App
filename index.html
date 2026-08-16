@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MilanMatch - Matrimonial App</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f7f3f5;
+      color: #333;
+    }
+
+    header {
+      background: #8e2457;
+      color: white;
+      padding: 18px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 25px;
+    }
+
+    .matches {
+      background: white;
+      color: #8e2457;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 35px 20px;
+    }
+
+    .hero h2 {
+      font-size: 30px;
+      margin-bottom: 8px;
+      color: #8e2457;
+    }
+
+    .hero p {
+      color: #666;
+    }
+
+    .filters {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filters input,
+    .filters select {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      min-width: 180px;
+      outline: none;
+    }
+
+    .profiles {
+      max-width: 1100px;
+      margin: 20px auto 50px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+
+    .info {
+      padding: 18px;
+    }
+
+    .info h3 {
+      color: #8e2457;
+      margin-bottom: 8px;
+    }
+
+    .info p {
+      color: #666;
+      margin: 5px 0;
+    }
+
+    .like-btn {
+      width: 100%;
+      margin-top: 15px;
+      padding: 11px;
+      border: 1px solid #8e2457;
+      background: white;
+      color: #8e2457;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .like-btn.liked {
+      background: #8e2457;
+      color: white;
+    }
+
+    .empty {
+      text-align: center;
+      grid-column: 1 / -1;
+      padding: 40px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>💍 MilanMatch</h1>
+    <div class="matches">
+      ❤️ Matches: <span id="matchCount">0</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Find Your Perfect Match</h2>
+    <p>Discover compatible profiles based on your preferences.</p>
+  </section>
+
+  <div class="filters">
+    <input
+      type="text"
+      id="search"
+      placeholder="Search by name..."
+    />
+
+    <select id="city">
+      <option value="">All Cities</option>
+      <option value="Delhi">Delhi</option>
+      <option value="Mumbai">Mumbai</option>
+      <option value="Jaipur">Jaipur</option>
+      <option value="Bangalore">Bangalore</option>
+    </select>
+  </div>
+
+  <main class="profiles" id="profiles"></main>
+
+  <script>
+    const profiles = [
+      {
+        id: 1,
+        name: "Aarav Sharma",
+        age: 28,
+        city: "Delhi",
+        profession: "Software Engineer",
+        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+      },
+      {
+        id: 2,
+        name: "Priya Mehta",
+        age: 26,
+        city: "Mumbai",
+        profession: "Designer",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+      },
+      {
+        id: 3,
+        name: "Rohan Verma",
+        age: 30,
+        city: "Jaipur",
+        profession: "Business Owner",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
+      },
+      {
+        id: 4,
+        name: "Ananya Singh",
+        age: 27,
+        city: "Bangalore",
+        profession: "Doctor",
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb"
+      },
+      {
+        id: 5,
+        name: "Kabir Kapoor",
+        age: 29,
+        city: "Delhi",
+        profession: "Product Manager",
+        image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d"
+      },
+      {
+        id: 6,
+        name: "Neha Gupta",
+        age: 25,
+        city: "Mumbai",
+        profession: "Teacher",
+        image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df"
+      }
+    ];
+
+    let likedProfiles =
+      JSON.parse(localStorage.getItem("likedProfiles")) || [];
+
+    const profileContainer = document.getElementById("profiles");
+    const searchInput = document.getElementById("search");
+    const citySelect = document.getElementById("city");
+    const matchCount = document.getElementById("matchCount");
+
+    function renderProfiles() {
+      const searchText = searchInput.value.toLowerCase();
+      const selectedCity = citySelect.value;
+
+      const filteredProfiles = profiles.filter(profile => {
+        const matchesSearch =
+          profile.name.toLowerCase().includes(searchText) ||
+          profile.profession.toLowerCase().includes(searchText);
+
+        const matchesCity =
+          selectedCity === "" ||
+          profile.city === selectedCity;
+
+        return matchesSearch && matchesCity;
+      });
+
+      profileContainer.innerHTML = "";
+
+      if (filteredProfiles.length === 0) {
+        profileContainer.innerHTML = `
+          <div class="empty">
+            <h3>No profiles found 😔</h3>
+            <p>Try changing your search or city.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filteredProfiles.forEach(profile => {
+        const isLiked = likedProfiles.includes(profile.id);
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <img
+            src="${profile.image}"
+            alt="${profile.name}"
+          />
+
+          <div class="info">
+            <h3>${profile.name}</h3>
+
+            <p>🎂 ${profile.age} years old</p>
+            <p>📍 ${profile.city}</p>
+            <p>💼 ${profile.profession}</p>
+
+            <button
+              class="like-btn ${isLiked ? "liked" : ""}"
+              onclick="toggleLike(${profile.id})"
+            >
+              ${isLiked ? "❤️ Liked" : "♡ Like Profile"}
+            </button>
+          </div>
+        `;
+
+        profileContainer.appendChild(card);
+      });
+
+      matchCount.textContent = likedProfiles.length;
+    }
+
+    function toggleLike(id) {
+      if (likedProfiles.includes(id)) {
+        likedProfiles = likedProfiles.filter(
+          profileId => profileId !== id
+        );
+      } else {
+        likedProfiles.push(id);
+      }
+
+      localStorage.setItem(
+        "likedProfiles",
+        JSON.stringify(likedProfiles)
+      );
+
+      renderProfiles();
+    }
+
+    searchInput.addEventListener("input", renderProfiles);
+    citySelect.addEventListener("change", renderProfiles);
+
+    renderProfiles();
+  </script>
+
+</body>
+</html>
