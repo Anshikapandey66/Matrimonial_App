@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Matches - MilanMatch</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>💍 MilanMatch</h1>
+
+    <div class="matches">
+      ❤️ My Shortlist
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>My Shortlisted Profiles</h2>
+    <p>Profiles you have saved for later.</p>
+  </section>
+
+  <main
+    class="profiles"
+    id="matchesContainer"
+  ></main>
+
+  <script src="matches.js"></script>
+
+  <script>
+
+    const container =
+      document.getElementById("matchesContainer");
+
+    function showMatches() {
+
+      const matches = getMatches();
+
+      container.innerHTML = "";
+
+      if (matches.length === 0) {
+
+        container.innerHTML = `
+          <div class="empty">
+            <h3>No shortlisted profiles yet ❤️</h3>
+            <p>Go back and shortlist someone you like.</p>
+          </div>
+        `;
+
+        return;
+      }
+
+      matches.forEach(profile => {
+
+        const card =
+          document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+          <div class="info">
+
+            <h3>${profile.name}</h3>
+
+            <p>🎂 ${profile.age} years old</p>
+
+            <p>📍 ${profile.city}</p>
+
+            <p>💼 ${profile.profession}</p>
+
+            <p>🎓 ${profile.education}</p>
+
+            <button
+              class="like-btn liked"
+              onclick="removeProfile(${profile.id})"
+            >
+              Remove ❤️
+            </button>
+
+          </div>
+        `;
+
+        container.appendChild(card);
+
+      });
+    }
+
+    function removeProfile(id) {
+
+      removeFromShortlist(id);
+
+      showMatches();
+    }
+
+    showMatches();
+
+  </script>
+
+</body>
+</html>
