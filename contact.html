@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Contact - MilanMatch</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .contact-card {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 35px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .contact-card h1 {
+      color: #8e2457;
+      margin-bottom: 10px;
+    }
+
+    .contact-card p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .contact-card input,
+    .contact-card textarea {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .contact-card textarea {
+      resize: vertical;
+    }
+
+    .contact-card button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #8e2457;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contact-card">
+
+    <h1>📩 Contact MilanMatch</h1>
+
+    <p>
+      Have a question or feedback? Send us a message.
+    </p>
+
+    <form id="contactForm">
+
+      <input
+        type="text"
+        placeholder="Your Name"
+        required
+      >
+
+      <input
+        type="email"
+        placeholder="Your Email"
+        required
+      >
+
+      <textarea
+        rows="5"
+        placeholder="Your Message"
+        required
+      ></textarea>
+
+      <button type="submit">
+        Send Message
+      </button>
+
+    </form>
+
+    <p id="message"></p>
+
+  </div>
+
+  <script>
+    document
+      .getElementById("contactForm")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        document.getElementById("message").textContent =
+          "Thank you! Your message has been received. ❤️";
+
+        this.reset();
+      });
+  </script>
+
+</body>
+</html>
