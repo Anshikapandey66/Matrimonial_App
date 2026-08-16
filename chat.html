@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Chat - MilanMatch</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .chat-container {
+      max-width: 650px;
+      height: 80vh;
+      margin: 30px auto;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #8e2457;
+      color: white;
+      padding: 18px;
+    }
+
+    .chat-header h2 {
+      margin-bottom: 5px;
+    }
+
+    .chat-header p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #faf7f8;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 11px 14px;
+      margin-bottom: 12px;
+      border-radius: 14px;
+      line-height: 1.4;
+    }
+
+    .received {
+      background: #eee;
+      margin-right: auto;
+    }
+
+    .sent {
+      background: #8e2457;
+      color: white;
+      margin-left: auto;
+    }
+
+    .chat-form {
+      display: flex;
+      padding: 15px;
+      gap: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    .chat-form input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      outline: none;
+    }
+
+    .chat-form button {
+      border: none;
+      background: #8e2457;
+      color: white;
+      padding: 0 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="chat-container">
+
+    <div class="chat-header">
+      <h2>💬 Chat with Priya</h2>
+      <p>Start a meaningful conversation</p>
+    </div>
+
+    <div
+      class="messages"
+      id="messages"
+    >
+
+      <div class="message received">
+        Hi! Nice to meet you 😊
+      </div>
+
+      <div class="message sent">
+        Hi Priya! Nice to meet you too.
+      </div>
+
+    </div>
+
+    <form
+      class="chat-form"
+      id="chatForm"
+    >
+
+      <input
+        type="text"
+        id="messageInput"
+        placeholder="Type a message..."
+        required
+      >
+
+      <button type="submit">
+        Send
+      </button>
+
+    </form>
+
+  </div>
+
+  <script>
+
+    const form =
+      document.getElementById("chatForm");
+
+    const input =
+      document.getElementById("messageInput");
+
+    const messages =
+      document.getElementById("messages");
+
+    form.addEventListener(
+      "submit",
+      function(event) {
+
+        event.preventDefault();
+
+        const text =
+          input.value.trim();
+
+        if (!text) return;
+
+        const message =
+          document.createElement("div");
+
+        message.className =
+          "message sent";
+
+        message.textContent = text;
+
+        messages.appendChild(message);
+
+        input.value = "";
+
+        messages.scrollTop =
+          messages.scrollHeight;
+      }
+    );
+
+  </script>
+
+</body>
+</html>
