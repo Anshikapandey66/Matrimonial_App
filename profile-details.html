@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Profile Details - MilanMatch</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .details-card {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .details-card h1 {
+      color: #8e2457;
+      margin-bottom: 20px;
+    }
+
+    .detail {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .detail strong {
+      color: #8e2457;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 20px;
+      background: #8e2457;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="details-card">
+
+    <h1>💍 Profile Details</h1>
+
+    <div id="profileDetails"></div>
+
+    <a href="index.html" class="back-btn">
+      ← Back to Profiles
+    </a>
+
+  </div>
+
+  <script>
+    const profile = {
+      name: "Aarav Sharma",
+      age: 28,
+      gender: "Male",
+      city: "Delhi",
+      profession: "Software Engineer",
+      education: "Post Graduate",
+      religion: "Hindu",
+      about:
+        "I am a software engineer who enjoys travelling, reading and spending time with family."
+    };
+
+    const container =
+      document.getElementById("profileDetails");
+
+    container.innerHTML = `
+      <div class="detail">
+        <strong>Name:</strong>
+        ${profile.name}
+      </div>
+
+      <div class="detail">
+        <strong>Age:</strong>
+        ${profile.age}
+      </div>
+
+      <div class="detail">
+        <strong>Gender:</strong>
+        ${profile.gender}
+      </div>
+
+      <div class="detail">
+        <strong>City:</strong>
+        ${profile.city}
+      </div>
+
+      <div class="detail">
+        <strong>Profession:</strong>
+        ${profile.profession}
+      </div>
+
+      <div class="detail">
+        <strong>Education:</strong>
+        ${profile.education}
+      </div>
+
+      <div class="detail">
+        <strong>Religion:</strong>
+        ${profile.religion}
+      </div>
+
+      <div class="detail">
+        <strong>About:</strong>
+        ${profile.about}
+      </div>
+    `;
+  </script>
+
+</body>
+</html>
